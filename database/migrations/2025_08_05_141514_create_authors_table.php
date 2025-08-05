@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->text('bio')->nullable();
-            $table->enum('role', ['admin', 'author'])->default('author');
+            $table->boolean('is_admin')->default(false);
             $table->string('password');
             $table->timestamps();
         });
