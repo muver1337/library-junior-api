@@ -16,3 +16,5 @@ Route::get('/authors', [AuthorsController::class, 'index']);
 Route::get('/genres', [GenresController::class, 'index']);
 Route::get('/authors/{id}', [AuthorsController::class, 'show']);
 Route::get('/books/{id}', [BooksController::class, 'show']);
+
+Route::post('/login', [AuthController::class, 'login']);
