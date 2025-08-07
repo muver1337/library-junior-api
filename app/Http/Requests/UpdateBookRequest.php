@@ -21,9 +21,9 @@ class UpdateBookRequest extends FormRequest
                 Rule::unique('books', 'title')->ignore($this->route('id')),
             ],
             'description' => 'sometimes|nullable|string',
-            'type' => 'sometimes|in:printed,digital,graphic',
-            'genre_ids' => 'sometimes|array',
-            'genre_ids.*' => 'exists:genres,id',
+            'book_type' => 'sometimes|in:printed,digital,graphic',
+            'genre_id' => 'sometimes|exists:genres,id',
         ];
     }
+
 }

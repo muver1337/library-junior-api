@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('book_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('book_id')->nullable()->constrained('books')->onDelete('set null');
-            $table->foreignId('author_id')->nullable()->constrained('authors')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->string('action');
             $table->timestamp('created_at')->useCurrent();
         });

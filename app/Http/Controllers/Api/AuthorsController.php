@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Author;
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthorsController extends Controller
@@ -14,7 +14,7 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        return Author::withCount('books')->paginate(10);
+        return User::withCount('books')->paginate(10);
     }
 
     /**
@@ -30,7 +30,7 @@ class AuthorsController extends Controller
      */
     public function show(string $id)
     {
-        return Author::with('books')->findOrFail($id);
+        return User::with('books')->findOrFail($id);
     }
 
     /**

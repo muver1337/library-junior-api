@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
+use App\Services\BookService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,14 +42,10 @@ class BooksController extends Controller
     public function update(UpdateBookRequest $request, string $id)
     {
         $book = Book::where('id', $id)
-            ->where('author_id', Auth::id())
+            ->where('user_id', Auth::id())
             ->firstOrFail();
 
         $book->update($request->validated());
-
-        if ($request->has('genre_ids')) {
-            $book->genres()->sync($request->genre_ids);
-        }
 
         return response()->json([
             'message' => 'Книга успешно обновлена',
@@ -58,11 +56,23 @@ class BooksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id, BookService $bookService)
     {
-        $book = Book::findOrFail($id);
-        $book->delete();
+        try {
+            $bookService->deleteBook($id, auth()->id());
 
-        return response()->json(['message' => 'Книга успешно удалена']);
+            return response()->json([
+                'message' => 'Книга успешно удалена'
+            ]);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 403);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
+
 }

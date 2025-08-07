@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->text('bio')->nullable();
-            $table->boolean('is_admin')->default(false);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('password');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

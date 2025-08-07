@@ -3,8 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsAuthor;
+use App\Http\Middleware\CheckRoleAdmin;
+use App\Http\Middleware\CheckRoleAuthor;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'admin' => IsAdmin::class,
-            'author' => IsAuthor::class,
+            'admin' => CheckRoleAdmin::class,
+            'author' => CheckRoleAuthor::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

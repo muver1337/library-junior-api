@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->text('description')->nullable();
-            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('genre_id')->constrained('genres')->onDelete('cascade');
             $table->enum('book_type', ['graphic', 'digital', 'printed']);
             $table->timestamp('created_at')->useCurrent();
