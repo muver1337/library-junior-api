@@ -18,3 +18,8 @@ Route::get('/authors/{id}', [AuthorsController::class, 'show']);
 Route::get('/books/{id}', [BooksController::class, 'show']);
 
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware(['auth:sanctum', 'author'])->group(function () {
+    Route::patch('/books/{id}', [BooksController::class, 'update']);
+    Route::delete('/books/{id}', [BooksController::class, 'destroy']);
+});

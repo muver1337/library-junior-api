@@ -18,7 +18,8 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->string('password');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

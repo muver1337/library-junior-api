@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('book_id')->nullable()->constrained('books')->onDelete('set null');
             $table->foreignId('author_id')->nullable()->constrained('authors')->onDelete('set null');
             $table->string('action');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

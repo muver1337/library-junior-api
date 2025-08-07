@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller
 {
@@ -13,7 +15,7 @@ class BooksController extends Controller
      */
     public function index()
     {
-        return Book::with('author')->paginate(10);
+        return Book::with('authors')->paginate(10);
     }
 
     /**
@@ -35,16 +37,32 @@ class BooksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBookRequest $request, string $id)
     {
-        //
+        $book = Book::where('id', $id)
+            ->where('author_id', Auth::id())
+            ->firstOrFail();
+
+        $book->update($request->validated());
+
+        if ($request->has('genre_ids')) {
+            $book->genres()->sync($request->genre_ids);
+        }
+
+        return response()->json([
+            'message' => 'Книга успешно обновлена',
+            'book' => $book,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return response()->json(['message' => 'Книга успешно удалена']);
     }
 }
