@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateBookRequest;
@@ -15,9 +15,11 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(BookService $service)
     {
-        return Book::with('authors')->paginate(10);
+        return response()->json(
+            $service->index(withGenres: false)
+        );
     }
 
     /**
@@ -41,16 +43,7 @@ class BooksController extends Controller
      */
     public function update(UpdateBookRequest $request, string $id)
     {
-        $book = Book::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
 
-        $book->update($request->validated());
-
-        return response()->json([
-            'message' => 'Книга успешно обновлена',
-            'book' => $book,
-        ]);
     }
 
     /**
@@ -58,21 +51,7 @@ class BooksController extends Controller
      */
     public function destroy($id, BookService $bookService)
     {
-        try {
-            $bookService->deleteBook($id, auth()->id());
 
-            return response()->json([
-                'message' => 'Книга успешно удалена'
-            ]);
-        } catch (AuthorizationException $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 403);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 404);
-        }
     }
 
 }

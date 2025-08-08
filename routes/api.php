@@ -1,15 +1,13 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\AuthorsController;
-use App\Http\Controllers\Api\BooksController;
-use App\Http\Controllers\Api\GenresController;
+use App\Http\Controllers\Api\Admin\AdminBooksController;
+use App\Http\Controllers\Api\Author\AuthorBooksController;
+use App\Http\Controllers\Api\Public\AuthController;
+use App\Http\Controllers\Api\Public\GenresController;
+use App\Http\Controllers\Api\Public\AuthorsController;
+use App\Http\Controllers\Api\Public\BooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 Route::get('/books', [BooksController::class, 'index']);
 Route::get('/authors', [AuthorsController::class, 'index']);
@@ -24,6 +22,15 @@ Route::post('/author/login', [AuthController::class, 'loginAuthor']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [AuthController::class, 'show']);
     Route::patch('/profile', [AuthController::class, 'update']);
-    Route::patch('/books/{id}', [BooksController::class, 'update'])->middleware('author');
-    Route::delete('/books/{id}', [BooksController::class, 'destroy'])->middleware('author');
+    Route::patch('/books/{id}', [AuthorBooksController::class, 'update'])->middleware('author');
+    Route::delete('/books/{id}', [AuthorBooksController::class, 'destroy'])->middleware('author');
 });
+
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::post('/admin/create', [AdminBooksController::class, 'store']);
+    Route::get('/admin/books', [AdminBooksController::class, 'index']);
+    Route::patch('/admin/update/{id}', [AdminBooksController::class, 'update']);
+    Route::delete('/admin/delete/{id}', [AdminBooksController::class, 'destroy']);
+    Route::get('/admin/books/{id}', [BooksController::class, 'show']);
+});
+

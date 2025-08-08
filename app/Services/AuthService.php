@@ -19,7 +19,7 @@ class AuthService
             $user->role !== $role
         ) {
             throw ValidationException::withMessages([
-                'email' => ['Invalid email, password or role.'],
+                'email' => ['Invalid email, password'],
             ]);
         }
 
