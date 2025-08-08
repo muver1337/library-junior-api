@@ -1,36 +1,41 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\AdminBooksController;
-use App\Http\Controllers\Api\Author\AuthorBooksController;
-use App\Http\Controllers\Api\Public\AuthController;
-use App\Http\Controllers\Api\Public\GenresController;
-use App\Http\Controllers\Api\Public\AuthorsController;
-use App\Http\Controllers\Api\Public\BooksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\BooksController;
+use App\Http\Controllers\Api\GenresController;
+use App\Http\Controllers\Api\AuthorsController;
+
+// Получение списка кинг
 Route::get('/books', [BooksController::class, 'index']);
-Route::get('/authors', [AuthorsController::class, 'index']);
-Route::get('/genres', [GenresController::class, 'index']);
-Route::get('/authors/{id}', [AuthorsController::class, 'show']);
+// Получение информации о книге по ID
 Route::get('/books/{id}', [BooksController::class, 'show']);
+// Получение списка жанров с количеством книг в каждом жанре
+Route::get('/genres', [GenresController::class, 'index']);
+// Получение детальной информации о жанре и связанных книгах
+Route::get('/genres/{id}', [GenresController::class, 'show']);
+// Получение списка авторов с количеством их книг
+Route::get('/authors', [AuthorsController::class, 'index']);
+// Получение детальной информации об авторе и его книгах
+Route::get('/authors/{id}', [AuthorsController::class, 'show']);
 
-Route::post('/admin/login', [AuthController::class, 'loginAdmin']);
-Route::post('/author/login', [AuthController::class, 'loginAuthor']);
-
-
+// Группа только для авторизованных пользователей
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profile', [AuthController::class, 'show']);
-    Route::patch('/profile', [AuthController::class, 'update']);
-    Route::patch('/books/{id}', [AuthorBooksController::class, 'update'])->middleware('author');
-    Route::delete('/books/{id}', [AuthorBooksController::class, 'destroy'])->middleware('author');
+    // Добавление книги
+    Route::post('/books', [BooksController::class, 'store']);
+    // Обновление книги по ID
+    Route::patch('/books/{id}', [BooksController::class, 'update']);
+    // Удаление книги по ID
+    Route::delete('/books/{id}', [BooksController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::post('/admin/create', [AdminBooksController::class, 'store']);
-    Route::get('/admin/books', [AdminBooksController::class, 'index']);
-    Route::patch('/admin/update/{id}', [AdminBooksController::class, 'update']);
-    Route::delete('/admin/delete/{id}', [AdminBooksController::class, 'destroy']);
-    Route::get('/admin/books/{id}', [BooksController::class, 'show']);
+    // Создание жанра
+    Route::post('/genres', [GenresController::class, 'store']);
+    // Обновление жанра по ID
+    Route::patch('/genres/{id}', [GenresController::class, 'update']);
+    // Удаление жанра по ID
+    Route::delete('/genres/{id}', [GenresController::class, 'destroy']);
 });
 
