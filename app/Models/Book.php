@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\BookType;
+use App\Models\BookType;
 use Illuminate\Database\Eloquent\Model;
 
 class   Book extends Model
@@ -14,13 +14,13 @@ class   Book extends Model
         'description',
         'genre_id',
     ];
-    public function author(){
+    public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
 
     public function bookType()
     {
-        return $this->belongsTo(Book_type::class);
+        return $this->belongsTo(BookType::class, 'book_type_id');
     }
 
     public function genre(){
@@ -32,6 +32,7 @@ class   Book extends Model
         if ($title) {
             $query->where('title', 'like', '%'.$title.'%');
         }
+        return $query;
     }
 
     public function scopeFilterAuthor($query, $user_id)
@@ -39,6 +40,7 @@ class   Book extends Model
         if ($user_id) {
             $query->where('user_id', $user_id);
         }
+        return $query;
     }
 
     public function scopeFilterGenre($query, $genreId)
@@ -46,6 +48,7 @@ class   Book extends Model
         if ($genreId) {
             $query->where('genre_id', $genreId);
         }
+        return $query;
     }
 
     public function scopeFilterCreatedFrom($query, $dateFrom)
@@ -53,6 +56,7 @@ class   Book extends Model
         if ($dateFrom) {
             $query->where('created_at', '>=', $dateFrom);
         }
+        return $query;
     }
 
     public function scopeFilterCreatedTo($query, $dateTo)
@@ -60,6 +64,7 @@ class   Book extends Model
         if ($dateTo) {
             $query->where('created_at', '<=', $dateTo);
         }
+        return $query;
     }
 
     public function scopeSortTitle($query, $direction)
@@ -67,5 +72,6 @@ class   Book extends Model
         if (in_array($direction, ['asc', 'desc'])) {
             $query->orderBy('title', $direction);
         }
+        return $query;
     }
 }

@@ -27,8 +27,8 @@ class StoreBookRequest extends FormRequest
         return [
             'title.required' => 'Название книги обязательно',
             'title.unique' => 'Книга с таким названием уже существует',
-            'author_id.required' => 'Автор обязателен',
-            'author_id.exists' => 'Автор не найден',
+            'user_id.required' => 'Автор обязателен',
+            'user_id.exists' => 'Автор не найден',
         ];
     }
 }

@@ -9,26 +9,26 @@ use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
-    public function login(array $data, string $role): array
+    public function login(array $data): array
     {
         $user = User::where('email', $data['email'])->first();
 
         if (
             !$user ||
-            !Hash::check($data['password'], $user->password) ||
-            $user->role !== $role
+            !Hash::check($data['password'], $user->password)
         ) {
             throw ValidationException::withMessages([
-                'email' => ['Invalid email, password'],
+                'email' => ['Invalid email or password'],
             ]);
         }
+        $user->tokens()->where('name', $user->role . '-token')->delete();
 
-        $token = $user->createToken($role . '-token')->plainTextToken;
+        $token = $user->createToken($user->role . '-token')->plainTextToken;
 
         return [
             'token' => $token,
             'user' => $user,
-            'role' => $role,
+            'role' => $user->role,
         ];
     }
 

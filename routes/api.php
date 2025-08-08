@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +21,11 @@ Route::get('/authors', [AuthorsController::class, 'index']);
 // Получение детальной информации об авторе и его книгах
 Route::get('/authors/{id}', [AuthorsController::class, 'show']);
 
+// Авторизация
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
 // Группа только для авторизованных пользователей
 Route::middleware('auth:sanctum')->group(function () {
-    // Добавление книги
-    Route::post('/books', [BooksController::class, 'store']);
     // Обновление книги по ID
     Route::patch('/books/{id}', [BooksController::class, 'update']);
     // Удаление книги по ID
@@ -31,6 +33,14 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    // Добавление книги
+    Route::post('/books', [BooksController::class, 'store']);
+    // Добавление автора
+    Route::post('/authors', [AuthorsController::class, 'store']);
+    // Удаление автора
+    Route::delete('/authors/{id}', [AuthorsController::class, 'destroy']);
+    // Обновление автора
+    Route::patch('/authors/{id}', [AuthorsController::class, 'update']);
     // Создание жанра
     Route::post('/genres', [GenresController::class, 'store']);
     // Обновление жанра по ID

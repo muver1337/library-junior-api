@@ -17,13 +17,10 @@ class GenresController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Genre::class);
-
         $data = $request->validate([
             'name' => 'required|string|unique:genres,name',
         ]);
-
         $genre = Genre::create($data);
-
         return response()->json([
             'message' => 'Жанр успешно создан',
             'data' => $genre,
@@ -39,15 +36,11 @@ class GenresController extends Controller
     public function update(Request $request, int $id)
     {
         $genre = Genre::findOrFail($id);
-
         $this->authorize('update', $genre);
-
         $data = $request->validate([
             'name' => 'required|string|unique:genres,name,' . $id,
         ]);
-
         $genre->update($data);
-
         return response()->json([
             'message' => 'Жанр успешно обновлен',
             'data' => $genre,
@@ -57,11 +50,8 @@ class GenresController extends Controller
     public function destroy(int $id)
     {
         $genre = Genre::findOrFail($id);
-
         $this->authorize('delete', $genre);
-
         $genre->delete();
-
         return response()->json(['message' => 'Жанр успешно удален']);
     }
 }
