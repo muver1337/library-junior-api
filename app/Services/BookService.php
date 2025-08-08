@@ -22,26 +22,34 @@ class BookService
         $book->delete();
     }
 
-    public function index($withGenres = false, $perPage = 10)
+    public function index(array $filters = [], int $perPage = 10, bool $withGenres = true)
     {
-        $query = Book::with(['author:id,name']);
+        $query = Book::with('author');
 
         if ($withGenres) {
-            $query->with(['genre:id,name']);
+            $query->with('genre');
         }
 
-        return $query
-            ->orderBy('title', 'desc')
-            ->paginate($perPage)
-            ->through(function ($book) use ($withGenres) {
-                return [
-                    'id' => $book->id,
-                    'title' => $book->title,
-                    'author' => $book->author ? $book->author->name : null,
-                    'genre' => $withGenres && $book->genre ? $book->genre->name : null,
-                    'created_at' => $book->created_at->format('Y-m-d H:i:s'),
-                ];
-            });
+        $query->filterTitle($filters['title'] ?? null)
+            ->filterAuthor($filters['author_id'] ?? null)
+            ->filterGenre($filters['genre_id'] ?? null)
+            ->filterCreatedFrom($filters['created_from'] ?? null)
+            ->filterCreatedTo($filters['created_to'] ?? null)
+            ->sortTitle($filters['sort_by'] ?? null);
+
+        $books = $query->paginate($perPage);
+
+        $books->getCollection()->transform(function ($book) use ($withGenres) {
+            return [
+                'id' => $book->id,
+                'title' => $book->title,
+                'user_id' => $book->author ? $book->author->id : null,
+                'genre_id' => $withGenres && $book->genre ? $book->genre->id : null,
+                'created_at' => $book->created_at->toDateTimeString(),
+            ];
+        });
+
+        return $books;
     }
 
     public function show(int $id)

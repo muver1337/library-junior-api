@@ -16,11 +16,13 @@ class AdminBooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(BookService $service)
+    public function index(Request $request, BookService $service)
     {
-        return response()->json(
-            $service->index(withGenres: true)
-        );
+        $filters = $request->only(['title', 'user_id', 'genre_id', 'created_from', 'created_to', 'sort_by']);
+        $perPage = $request->get('per_page', 10);
+        $books = $service->index($filters, $perPage, true);
+
+        return response()->json($books);
     }
 
     /**

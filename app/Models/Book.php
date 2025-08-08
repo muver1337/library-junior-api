@@ -26,4 +26,46 @@ class   Book extends Model
     public function genre(){
         return $this->belongsTo(Genre::class, 'genre_id');
     }
+
+    public function scopeFilterTitle($query, $title)
+    {
+        if ($title) {
+            $query->where('title', 'like', '%'.$title.'%');
+        }
+    }
+
+    public function scopeFilterAuthor($query, $user_id)
+    {
+        if ($user_id) {
+            $query->where('user_id', $user_id);
+        }
+    }
+
+    public function scopeFilterGenre($query, $genreId)
+    {
+        if ($genreId) {
+            $query->where('genre_id', $genreId);
+        }
+    }
+
+    public function scopeFilterCreatedFrom($query, $dateFrom)
+    {
+        if ($dateFrom) {
+            $query->where('created_at', '>=', $dateFrom);
+        }
+    }
+
+    public function scopeFilterCreatedTo($query, $dateTo)
+    {
+        if ($dateTo) {
+            $query->where('created_at', '<=', $dateTo);
+        }
+    }
+
+    public function scopeSortTitle($query, $direction)
+    {
+        if (in_array($direction, ['asc', 'desc'])) {
+            $query->orderBy('title', $direction);
+        }
+    }
 }
