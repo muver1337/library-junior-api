@@ -18,6 +18,12 @@ class UpdateProfileRequest extends FormRequest
         return [
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:users,email,' . $userId,
+            'bio' => 'sometimes|string|nullable',
+            'password' => 'sometimes|string|min:6|confirmed',
+            'role' => 'prohibited',
+            'created_at' => 'prohibited',
+            'updated_at' => 'prohibited',
+            'id' => 'prohibited',
         ];
     }
 }

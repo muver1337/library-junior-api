@@ -33,8 +33,7 @@ class AuthService
 
     public function getUserProfile($user)
     {
-        $user->load('user');
-        return $user->user ?? $user;
+        return $user;
     }
 
     public function updateUserProfile($user, array $data)
@@ -54,21 +53,11 @@ class AuthService
                 'bio' => $data['bio'] ?? null,
             ]);
 
-//            $author = null;
-//            if ($user->role === 'author') {
-//                $author = ::create([
-//                    'user_id' => $user->id,
-//                    'bio' => $data['bio'] ?? null,
-//                    'role' => 'author',
-//                ]);
-//            }
-
             $token = $user->createToken($user->role . '-token')->plainTextToken;
 
             return [
                 'token' => $token,
                 'user' => $user,
-                'author' => $author,
             ];
         });
     }

@@ -19,9 +19,10 @@ Route::get('/books/{id}', [BooksController::class, 'show']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware(['auth:sanctum', 'author'])->group(function () {
-    Route::patch('/books/{id}', [BooksController::class, 'update']);
-    Route::delete('/books/{id}', [BooksController::class, 'destroy']);
-    Route::get('/profile/', [AuthController::class, 'getProfile']);
-    Route::patch('/profile', [AuthController::class, 'updateProfile']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile', [AuthController::class, 'show']);
+    Route::patch('/profile', [AuthController::class, 'update']);
+    Route::patch('/books/{id}', [BooksController::class, 'update'])->middleware('author');
+    Route::delete('/books/{id}', [BooksController::class, 'destroy'])->middleware('author');
 });

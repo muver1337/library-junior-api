@@ -14,9 +14,10 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        return User::withCount('books')->paginate(10);
+        return User::where('role', 'author')
+            ->withCount('books')
+            ->paginate(10);
     }
-
     /**
      * Store a newly created resource in storage.
      */

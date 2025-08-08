@@ -27,12 +27,12 @@ class AuthController extends Controller
 
     }
 
-    public function getProfile(Request $request)
+    public function show(Request $request)
     {
-        return response()->json($this->auth->getUserProfile($request->user()));
+        return $this->auth->getUserProfile($request->user());
     }
 
-    public function updateProfile(UpdateProfileRequest $request)
+    public function update(UpdateProfileRequest $request)
     {
         $user = $request->user();
         $updatedUser = $this->auth->updateUserProfile($user, $request->validated());
