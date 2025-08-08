@@ -17,7 +17,8 @@ Route::get('/genres', [GenresController::class, 'index']);
 Route::get('/authors/{id}', [AuthorsController::class, 'show']);
 Route::get('/books/{id}', [BooksController::class, 'show']);
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/admin/login', [AuthController::class, 'loginAdmin']);
+Route::post('/author/login', [AuthController::class, 'loginAuthor']);
 
 
 Route::middleware('auth:sanctum')->group(function () {

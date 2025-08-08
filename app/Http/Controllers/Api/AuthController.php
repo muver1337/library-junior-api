@@ -21,10 +21,14 @@ class AuthController extends Controller
         $this->auth = $auth;
     }
 
-    public function login(LoginRequest $request)
+    public function loginAdmin(LoginRequest $request)
     {
-        return $this->auth->login($request->validated());
+        return $this->auth->login($request->validated(), 'admin');
+    }
 
+    public function loginAuthor(LoginRequest $request)
+    {
+        return $this->auth->login($request->validated(), 'author');
     }
 
     public function show(Request $request)
