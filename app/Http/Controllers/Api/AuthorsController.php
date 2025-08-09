@@ -17,14 +17,7 @@ class AuthorsController extends Controller
         $this->authorService = $authorService;
     }
 
-    public function login(LoginRequest $request)
-    {
-        return response()->json(
-            $this->auth->login($request->validated())
-        );
-    }
-
-
+    // Получение всех авторов
     public function index()
     {
         return response()->json(
@@ -32,6 +25,7 @@ class AuthorsController extends Controller
         );
     }
 
+    // Получение автора по ID
     public function show(int $id)
     {
         return response()->json(
@@ -39,6 +33,7 @@ class AuthorsController extends Controller
         );
     }
 
+    // Регистрация автора
     public function store(StoreAuthorRequest $request)
     {
         return response()->json(
@@ -47,6 +42,7 @@ class AuthorsController extends Controller
         );
     }
 
+    // Обновление автора
     public function update(UpdateAuthorRequest $request, int $id)
     {
         return response()->json(
@@ -54,6 +50,7 @@ class AuthorsController extends Controller
         );
     }
 
+    // Удаление автора
     public function destroy(int $id)
     {
         $this->authorService->deleteAuthor($id);

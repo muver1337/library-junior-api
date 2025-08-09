@@ -18,6 +18,7 @@ class BooksController extends Controller
         $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
 
+    // Получеие всех книг
     public function index(Request $request)
     {
         return response()->json(
@@ -25,6 +26,7 @@ class BooksController extends Controller
         );
     }
 
+    // Добавление новой книги
     public function store(StoreBookRequest $request)
     {
         return response()->json(
@@ -33,6 +35,7 @@ class BooksController extends Controller
         );
     }
 
+    // Получение книги по ID
     public function show(int $id)
     {
         return response()->json(
@@ -40,6 +43,7 @@ class BooksController extends Controller
         );
     }
 
+    // Обновление книги
     public function update(UpdateBookRequest $request, int $id)
     {
         return response()->json(
@@ -48,6 +52,7 @@ class BooksController extends Controller
     }
 
 
+    // Удаление книги
     public function destroy(int $id, Request $request)
     {
         $user = $request->user();
