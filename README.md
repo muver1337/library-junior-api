@@ -8,11 +8,11 @@
 
   <li>
     <strong>Клонируйте репозиторий в папку XAMPP: C:/xampp/htdocs</strong><br>
-    <code>git clone https://github.com/muver1337/php-test-project.git</code>
+    <code>git clone https://github.com/muver1337/library-junior-api.git</code>
   </li>
 
   <li>
-    <strong>С помощью вашей IDE перейдите в директорию проекта: php-test-project</strong><br>
+    <strong>С помощью вашей IDE перейдите в директорию проекта: library-junior-api</strong><br>
   </li>
 
   <li>
@@ -64,6 +64,7 @@ DB_PASSWORD=
 
 <h2>API endpoints</h2>
 <p>Базовый префикс — <code>/api</code>. Авторизация через Laravel Sanctum.</p>
+<p>Пример запроса <code> GET http://localhost/library-junior-api/public/api/books </code> </p>
 
 <h3>Публичная часть</h3>
 <table>
