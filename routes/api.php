@@ -26,6 +26,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Группа только для авторизованных пользователей
 Route::middleware('auth:sanctum')->group(function () {
+    // Получение автора по ID
+    Route::get('/profile/{id}', [AuthorsController::class, 'show']);
+    // Обновление автора по ID
+    Route::patch('/profile/{id}', [AuthorsController::class, 'update']);
     // Обновление книги по ID
     Route::patch('/books/{id}', [BooksController::class, 'update']);
     // Удаление книги по ID
