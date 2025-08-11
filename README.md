@@ -130,8 +130,8 @@ DB_PASSWORD=
 
 <pre>
 {
-  "email": "admin@example.com",
-  "password": "password"
+  "email": "admin@gmail.com",
+  "password": "admin"
 }
 </pre>
 <p>Использовать в заголовке: <code>Authorization: Bearer &lt;token&gt;</code></p>
